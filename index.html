@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenMCP - Share, Secure &amp; Monetize MCP Services</title>
+    <title>Cardea - Enterprise-ready and decentralized MCP Infrastructure</title>
     <style>
         * {
             margin: 0;
@@ -12,505 +12,1095 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
+        :root {
+            --primary-gradient: linear-gradient(135deg, #c9a96e 0%, #8b6914 100%);
+            --secondary-gradient: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            --accent-gradient: linear-gradient(135deg, #cd853f 0%, #a0522d 100%);
+            --bronze-gradient: linear-gradient(135deg, #cd7f32 0%, #8b4513 100%);
+            --light-bg: #faf8f5;
+            --card-bg: #ffffff;
+            --text-primary: #2c2419;
+            --text-secondary: #6b5e4f;
+            --border-color: rgba(201, 169, 110, 0.2);
+            --soft-gold: #c9a96e;
+            --shadow-light: rgba(201, 169, 110, 0.1);
+            --shadow-medium: rgba(201, 169, 110, 0.2);
+        }
+        
         body {
-            color: #333342;
+            background: var(--light-bg);
+            color: var(--text-primary);
             line-height: 1.6;
+            overflow-x: hidden;
+            font-weight: 400;
         }
 
-        /* Mobile-first approach */
+        /* Geometric patterns background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(45deg, var(--soft-gold) 1px, transparent 1px),
+                linear-gradient(-45deg, var(--soft-gold) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            animation: float 30s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(5deg); }
+            66% { transform: translateY(10px) rotate(-5deg); }
+        }
+
+        /* Container */
         .container {
             width: 100%;
             padding: 0 1rem;
             margin: 0 auto;
+            max-width: 1200px;
         }
 
-        @media (min-width: 768px) {
-            .container {
-                padding: 0 2rem;
-                max-width: 1200px;
-            }
-        }
-
-        /* Mobile navigation */
-        .mobile-menu-btn {
-            display: block;
-            cursor: pointer;
-        }
-
-        .nav-menu {
-            display: none;
-            width: 100%;
-        }
-
-        .nav-menu.active {
-            display: block;
-            position: absolute;
-            top: 80px;
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
             left: 0;
             right: 0;
-            background-color: #FEFAF9;
-            padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             z-index: 1000;
-        }
-
-        .nav-menu ul {
-            flex-direction: column;
-            width: 100%;
-        }
-
-        .nav-menu ul li {
-            margin-bottom: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .mobile-menu-btn {
-                display: none;
-            }
-
-            .nav-menu {
-                display: block;
-                width: auto;
-            }
-
-            .nav-menu ul {
-                display: flex;
-                flex-direction: row;
-                gap: 1.5rem;
-            }
-        }
-
-        /* Responsive grid layouts */
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (min-width: 992px) {
-            .grid-container.three-col {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        /* Hero section responsive layout */
-        .hero-section {
-            display: flex;
-            flex-direction: column;
-            padding: 3rem 0;
-        }
-
-        .hero-content {
-            order: 2;
-        }
-
-        .hero-image {
-            order: 1;
-            margin-bottom: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .hero-section {
-                flex-direction: row;
-                align-items: center;
-                gap: 3rem;
-                padding: 6rem 0;
-            }
-
-            .hero-content {
-                order: 1;
-                flex: 1;
-            }
-
-            .hero-image {
-                order: 2;
-                flex: 1;
-                margin-bottom: 0;
-            }
-        }
-
-        /* Footer responsive */
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .footer-grid {
-                grid-template-columns: 2fr 1fr;
-            }
-        }
-
-        @media (min-width: 992px) {
-            .footer-grid {
-                grid-template-columns: 2fr 1fr 1fr 1fr;
-            }
-        }
-
-        /* Button styles */
-        .btn {
-            display: inline-block;
-            background-color: #D98B76;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: background-color 0.3s;
-            text-align: center;
-        }
-
-        /* Typography responsive */
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(90deg, #D98B76 0%, #8A74E8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        @media (min-width: 768px) {
-            h1 {
-                font-size: 3.5rem;
-            }
-        }
-
-        /* Header styles */
-        header {
-            width: 100%;
-            background-color: #FEFAF9;
-            position: sticky;
-            top: 0;
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: rgba(250, 248, 245, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 20px var(--shadow-light);
         }
 
         .header-container {
             display: flex;
-            flex-direction: column;
-            padding: 1rem;
-        }
-
-        .header-top {
-            display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        @media (min-width: 768px) {
-            .header-container {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                padding: 1.5rem 2rem;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 20px var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .logo:hover .logo-icon::before {
+            left: 100%;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section - Optimized spacing */
+        .hero {
+            min-height: 65vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 0 40px;
+            position: relative;
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f1eb 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a96e' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.6;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .hero h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 20px var(--shadow-medium);
+            border: none;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--shadow-medium);
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        @media (max-width: 992px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        /* Image responsive */
-        img {
-            max-width: 100%;
-            height: auto;
+        @media (max-width: 568px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px var(--shadow-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px var(--shadow-medium);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        /* Features Section */
+        .section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        .section:nth-child(even) {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f7f4 100%);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .software-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .software-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .software-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(201, 169, 110, 0.3);
+            box-shadow: 0 20px 60px rgba(201, 169, 110, 0.15);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            box-shadow: 0 8px 30px var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .feature-card:hover .feature-icon::before {
+            left: 100%;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Token Economics */
+        .token-section {
+            padding: 4rem 0;
+            background: transparent;
+        }
+
+        .token-uses {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .token-use {
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .token-use:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px var(--shadow-medium);
+            border-color: var(--soft-gold);
+        }
+
+        .token-use-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .token-use-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #f5f1eb 0%, #ebe6dd 100%);
+            color: var(--text-secondary);
+            padding: 4rem 0 2rem;
+            border-top: 3px solid var(--soft-gold);
+            margin-top: 0;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c9a96e' fill-opacity='0.03'%3E%3Cpolygon points='20,0 0,20 20,40 40,20'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            position: relative;
+        }
+
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--primary-gradient);
+            border-radius: 1px;
+        }
+
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+            padding-left: 0;
+        }
+
+        .footer-section a:hover {
+            color: var(--text-primary);
+            padding-left: 10px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(201, 169, 110, 0.2);
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+
+            .hero {
+                min-height: 55vh;
+                padding: 80px 0 30px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .section-header {
+                margin-bottom: 2rem;
+            }
+
+            .token-section {
+                padding: 2rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
         }
     </style>
 </head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5WC6LFQ3YP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5WC6LFQ3YP');
+</script>
+
 <body>
-    <!-- Mobile-friendly Header -->
+    <div class="bg-animation"></div>
+
+    <!-- Header -->
     <header>
-        <div class="container header-container">
-            <div class="header-top">
-                <div style="font-size: 1.8rem; font-weight: 700; color: #D98B76; display: flex; align-items: center; gap: 0.5rem;">
-                    <div style="width: 36px; height: 36px; background-color: #D98B76; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">O</div>
-                    <span>OpenMCP</span>
-                </div>
-                
-                <div class="mobile-menu-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
-                </div>
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">C</div>
+                <span>Cardea</span>
             </div>
-            
-            <div class="nav-menu">
-                <nav>
-                    <ul style="list-style: none;">
-                        <li><a href="#features" style="text-decoration: none; color: #333342; font-weight: 500; transition: color 0.3s; padding-bottom: 0.3rem;">Features</a></li>
-                        <li><a href="#how-it-works" style="text-decoration: none; color: #333342; font-weight: 500; transition: color 0.3s; padding-bottom: 0.3rem;">How It Works</a></li>
-                        <li><a href="https://github.com/decentralized-mcp" style="text-decoration: none; color: #333342; font-weight: 500; transition: color 0.3s; padding-bottom: 0.3rem;">GitHub</a></li>
-                        <!-- <li><a href="https://github.com/decentralized-mcp" class="btn" style="display: block; margin-top: 1rem; text-align: center;">GitHub</a></li> -->
-                    </ul>
-                </nav>
-            </div>
+            <nav>
+                <ul>
+                    <li><a href="#enterprise-mcps">Enterprise MCPs</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#network">Network</a></li>
+                    <li><a href="#token">Token</a></li>
+                    <li><a href="https://github.com/cardea-mcp">GitHub</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
-    
+
     <!-- Hero Section -->
-    <section class="hero-section container">
-        <div class="hero-content">
-            <h1>Share, Secure & Monetize MCP Services</h1>
-            <p style="font-size: 1.1rem; color: #71717A; margin-bottom: 2rem;">MCP (Model Context Protocol) servers allow LLMs to <b>act</b> on its <b>thoughts</b>. OpenMCP makes local MCP services safely accessible over the web through runtime sandboxes, security rules and authorization policies.</p>
-            <p style="font-size: 1.1rem; color: #71717A; margin-bottom: 2rem;">The OpenMCP protocol enables individual MCP servers to verifiy and monetize their services through a staked crypto network.</p>
-            <a href="https://github.com/decentralized-mcp/servers" class="btn" style="width: 100%; max-width: 300px;">Getting started</a>
-        </div>
-        <div class="hero-image">
-            <img src="agent.jpg" alt="OpenMCP Diagram" style="border-radius: 16px; box-shadow: 0 20px 40px rgba(94, 66, 188, 0.1);" />
-        </div>
-    </section>
-    
-    <!-- Code Block Section (Responsive) -->
-    <div class="container" style="margin: 2rem auto 4rem;">
-        <div style="border: 2px solid #FF5F56; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);">
-            <div style="background-color: #2D2F3A; color: #F8F8F2; font-family: 'JetBrains Mono', monospace; padding: 1rem; border-radius: 10px; overflow: auto; font-size: 1.0rem; line-height: 1.5; position: relative;">
-                <div style="position: absolute; top: 12px; left: 12px; display: flex; gap: 6px;">
-                    <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #FF5F56;"></div>
-                    <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #FFBD2E;"></div>
-                    <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #27C93F;"></div>
-                </div>
-                <div style="margin-left: 10px; margin-right: 10px; padding-top: 20px;">
-                    # Quick start<br>
-                    <span style="color: #FF79C6;">$</span> <span style="color: #50FA7B;">curl -sSfL 'https://raw.githubusercontent.com/decentralized-mcp/proxy/refs/heads/master/install.sh' | sudo bash</span><br>
-                    <br>
-                    # Or, simply <a style="color: #ADD8E6" href="https://github.com/decentralized-mcp/proxy/releases/latest">download the binary package</a>, unzip it, and copy the <span style="color: #50FA7B;">openmcp</span> binary to your default <span style="color: #50FA7B;">PATH</span><br>
-                    <br>
-                    # Start an Internet-accessible OpenMCP server at port 8081 for a local MCP server in tools.py<br>
-                    <span style="color: #FF79C6;">$</span> <span style="color: #50FA7B;">openmcp run -p 0.0.0.0:8081</span> -- python tools.py<br>
-                    <br>
-                    # Coming soon: Start OpenMCP server with a Wasm MCP module<br>
-                    <span style="color: #FF79C6;">$</span> <span style="color: #50FA7B;">openmcp run -p 0.0.0.:8081 --service</span> my_mcp_server.wasm<br>
-                    <br>
-                    # Coming soon: Start OpenMCP server with a Wasm module that checks API keys<br>
-                    <span style="color: #FF79C6;">$</span> <span style="color: #50FA7B;">openmcp run -p 0.0.0.0:8081 --service</span> my_mcp_server.wasm <span style="color: #50FA7B;">--policy</span> check_api_key.wasm<br>
-                    <br>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Features Section -->
-    <section id="features" style="width: 100%; background-color: #FEFAF9; padding: 3rem 0; margin: 0;">
+    <section class="hero">
         <div class="container">
-            <div style="text-align: center; margin-bottom: 3rem;">
-                <h2 style="font-size: 2rem; font-weight: 700; color: #D98B76; margin-bottom: 1rem;">Features</h2>
-                <p style="font-size: 1.5rem; color: #71717A;">Transform local MCP servers into secure, reliable, and profitable online services</p>
-            </div>
-            <div class="grid-container three-col">
-                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(94, 66, 188, 0.06); transition: transform 0.3s, box-shadow 0.3s;">
-                    <div style="width: 50px; height: 50px; background-color: #FFF8F6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#D98B76" width="25" height="25">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem;">Execution sanbox</h3>
-                    <p style="color: #71717A; font-size: 0.95rem;">The WasmEdge sandbox is an isolated and secure execution environment for MCP services. For example, it could limit access to certain local files and URLs.</p>
-                </div>
-                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(94, 66, 188, 0.06); transition: transform 0.3s, box-shadow 0.3s;">
-                    <div style="width: 50px; height: 50px; background-color: #FFF8F6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#D98B76" width="25" height="25">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem;">Aggregate MCP servers</h3>
-                    <p style="color: #71717A; font-size: 0.95rem;">The OpenMCP proxy can dispatch requests to multiple local MCP servers, providing a single SSE URL for all functions in those MCP servers.</p>
-                </div>
-                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(94, 66, 188, 0.06); transition: transform 0.3s, box-shadow 0.3s;">
-                    <div style="width: 50px; height: 50px; background-color: #FFF8F6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#D98B76" width="25" height="25">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem;">Security Rules</h3>
-                    <p style="color: #71717A; font-size: 0.95rem;">Implement and enforce security rules defining which commands and API calls are allowed or prohibited by each MCP server.</p>
-                </div>
-                <!-- Additional Feature Cards -->
-                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(94, 66, 188, 0.06); transition: transform 0.3s, box-shadow 0.3s;">
-                    <div style="width: 50px; height: 50px; background-color: #FFF8F6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#D98B76" width="25" height="25">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem;">Monetization</h3>
-                    <p style="color: #71717A; font-size: 0.95rem;">Decentralized payment protocol supporting subscriptions and usage-based billing based on API keys.</p>
-                </div>
-                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(94, 66, 188, 0.06); transition: transform 0.3s, box-shadow 0.3s;">
-                    <div style="width: 50px; height: 50px; background-color: #FFF8F6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#D98B76" width="25" height="25">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem;">Authentication</h3>
-                    <p style="color: #71717A; font-size: 0.95rem;">Define and implement access control for each MCP server behind the OpenMCP proxy.</p>
-                </div>
-                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(94, 66, 188, 0.06); transition: transform 0.3s, box-shadow 0.3s;">
-                    <div style="width: 50px; height: 50px; background-color: #FFF8F6; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#D98B76" width="25" height="25">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                        </svg>
-                    </div>
-                    <h3 style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem;">Verifiable Services</h3>
-                    <p style="color: #71717A; font-size: 0.95rem;">Crypto staking for OpenMCP service providers to ensure that they are running the correct MCP functions.</p>
+            <div class="hero-content fade-in-up">
+                <h1>Professional MCP Infrastructure</h1>
+                <p class="hero-subtitle">
+                    Cardea enables sophisticated MCP services with authentication, authorization, payments, and trust validation. 
+                    Transform compute-intensive MCP servers into professionally hosted, monetizable services.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#enterprise-mcps" class="btn btn-primary">Try Enterprise MCPs</a>
+                    <a href="https://github.com/cardea-mcp" class="btn btn-secondary">View Documentation</a>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- How It Works Section -->
-    <section id="how-it-works" style="width: 100%; background-color: #FFF8F6; padding: 3rem 0; margin: 0;">
+
+    <!-- Enterprise Features Section -->
+    <section id="features" class="section">
         <div class="container">
-            <div style="text-align: center; margin-bottom: 3rem;">
-                <h2 style="font-size: 2rem; font-weight: 700; color: #D98B76; margin-bottom: 1rem;">How It Works</h2>
-                <p style="font-size: 1.5rem; color: #71717A;">OpenMCP is a proxy server that fully implements the MCP protocol. It can be extended with safe and sandboxed plugin modules that supports MCP services, security rules, auth, and even payments.</p>
+            <div class="section-header">
+                <h2>Production-ready</h2>
+                <p class="section-subtitle">
+                    Infrastructure and tools that make MCP services production-ready and enterprise-compliant.
+                </p>
             </div>
-            
-            <h3 style="text-align: center; margin: 2rem 0 1.5rem; font-size: 1.5rem; color: #D98B76;">Plugin modules</h3>
-            <div class="grid-container">
-                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 25px rgba(94, 66, 188, 0.08);">
-                    <div style="width: 40px; height: 40px; background-color: #D98B76; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin: 0 auto 1.5rem;">🛠️</div>
-                    <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; text-align: center;">MCP Services</h3>
-                    <p style="color: #71717A; font-size: 0.95rem;">Use Wasm modules that act as MCP servers within a secure sandboxed environment, making them much safer than traditional servers.</p>
+
+            <div class="software-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3 class="feature-title">OpenWallet DID Authentication</h3>
+                    <p class="feature-description">
+                        Secure identity management with decentralized identifiers (DIDs) ensure authenticated access to MCP services on the Cardea network.
+                    </p>
                 </div>
-                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 25px rgba(94, 66, 188, 0.08);">
-                    <div style="width: 40px; height: 40px; background-color: #D98B76; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin: 0 auto 1.5rem;">🔑</div>
-                    <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; text-align: center;">Auth &amp; Security</h3>
-                    <p style="color: #71717A; font-size: 0.95rem;">Define and enforce custom API key policies and security rules (e.g., pattern match permitted commands) for each local MCP server through Wasm modules.</p>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">TSP Transport</h3>
+                    <p class="feature-description">
+                        Trusted Service Provider (TSP) enables MCP services to have finely-grained permissions to perform actions on behalf of authenticated users.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🏗️</div>
+                    <h3 class="feature-title">Gaia Compute Platform</h3>
+                    <p class="feature-description">
+                        Leverage Gaia's distributed AI compute infrastructure for running resource-intensive MCP applications at scale.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3 class="feature-title">AVS Trust Network</h3>
+                    <p class="feature-description">
+                        Actively Validated Services (AVS) ensure service quality and validate that providers match their published DIDs.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🏪</div>
+                    <h3 class="feature-title">Service Marketplace</h3>
+                    <p class="feature-description">
+                        Discover, use, and pay for verified MCP services through the Cardea decentralized marketplace with reputation metrics.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Enterprise MCPs Section -->
+    <section id="enterprise-mcps" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Enterprise MCPs</h2>
+                    Compute-intensive MCP servers exclusively available on the Cardea network. Try our flagship services now.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">PR Reviewer</h3>
+                    <p class="feature-description">
+                        AI-powered code review service that analyzes pull requests, identifies potential issues, suggests improvements, and ensures code quality standards. Perfect for enterprise development workflows.
+                    </p>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="#" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.9rem; display: inline-block;">Try PR Reviewer</a>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎙️</div>
+                    <h3 class="feature-title">Podcast Maker</h3>
+                    <p class="feature-description">
+                        Transform any content into professional podcasts with AI-generated scripts, realistic voice synthesis, and automated audio production. Scale your content strategy effortlessly.
+                    </p>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="#" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.9rem; display: inline-block;">Try Podcast Maker</a>
+                    </div>
                 </div>
             </div>
 
-            <h3 style="text-align: center; margin: 3rem 0 1.5rem; font-size: 1.5rem; color: #D98B76;">OpenMCP network</h3>
-            <div class="grid-container">
-                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 25px rgba(94, 66, 188, 0.08);">
-                    <div style="width: 40px; height: 40px; background-color: #D98B76; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin: 0 auto 1.5rem;">🛡️</div>
-                    <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; text-align: center;">Verifiable</h3>
-                    <p style="color: #71717A; font-size: 0.95rem;">Through AVS staking, the network can verify that a node is providing services it claims to provide.</p>
+            <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, rgba(201, 169, 110, 0.1) 0%, rgba(201, 169, 110, 0.05) 100%); border-radius: 16px; border: 1px solid var(--border-color);">
+                <h4 style="margin-bottom: 1rem; color: var(--text-primary); font-size: 1.2rem;">Want to Host Your Own Enterprise MCP?</h4>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Join the Cardea network as a service provider and monetize your compute-intensive MCP servers with built-in authentication, payments, and trust validation.
+                </p>
+                <a href="#software" class="btn btn-secondary" style="padding: 0.75rem 1.5rem;">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cardea Software Section -->
+    <section id="software" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Cardea Software</h2>
+                <p class="section-subtitle">
+                    A comprehensive software suite that transforms MCP servers into professional, enterprise-ready services.
+                </p>
+            </div>
+
+            <div class="software-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3 class="feature-title">Universal Connector</h3>
+                    <p class="feature-description">
+                        Seamlessly connect and orchestrate multiple MCP servers, enabling complex workflows and inter-service communication.
+                    </p>
                 </div>
-                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 10px 25px rgba(94, 66, 188, 0.08);">
-                    <div style="width: 40px; height: 40px; background-color: #D98B76; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; margin: 0 auto 1.5rem;">💰</div>
-                    <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; text-align: center;">Monetizable</h3>
-                    <p style="color: #71717A; font-size: 0.95rem;">Users can pay for node services through our decentralized crypto payment services.</p>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🆔</div>
+                    <h3 class="feature-title">DID & TSP Support</h3>
+                    <p class="feature-description">
+                        Built-in support for OpenWallet DIDs and Trusted Service Providers, ensuring secure identity management and authorization.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <h3 class="feature-title">Integrated Payments</h3>
+                    <p class="feature-description">
+                        Native integration with Stripe, Coinbase, MetaMask, and smart contract escrow systems for seamless monetization.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Complex MCP Servers</h3>
+                    <p class="feature-description">
+                        Host and manage resource-intensive MCP applications including LLM agents, compilers, execution sandboxes, and web browsers.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Code Block Section -->
+            <div style="margin: 3rem 0;">
+                <div style="border: 2px solid var(--soft-gold); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px var(--shadow-medium);">
+                    <div style="background-color: #2D2F3A; color: #F8F8F2; font-family: 'JetBrains Mono', monospace; padding: 1rem; border-radius: 10px; overflow: auto; font-size: 1.0rem; line-height: 1.5; position: relative;">
+                        <div style="position: absolute; top: 12px; left: 12px; display: flex; gap: 6px;">
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #FF5F56;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #FFBD2E;"></div>
+                            <div style="width: 12px; height: 12px; border-radius: 50%; background-color: #27C93F;"></div>
+                        </div>
+                        <div style="margin-left: 10px; margin-right: 10px; padding-top: 20px;">
+                            # Quick start<br>
+                            <span style="color: #FF79C6;">$</span> <span style="color: #50FA7B;">curl -sSfL 'https://raw.githubusercontent.com/cardea-mcp/proxy/refs/heads/master/install.sh' | sudo bash</span><br>
+                            <br>
+                            # Make any stdio MCP server accessible via HTTP streaming<br>
+                            <span style="color: #FF79C6;">$</span> <span style="color: #50FA7B;">cardea run -p 8000</span> npx -y @modelcontextprotocol/server-everything<br>
+                            <br>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- Investors Section -->
-    <section style="width: 100%; background-color: #FEFAF9; padding: 3rem 0; margin: 0; text-align: center;">
+
+    <!-- Cardea Network Section -->
+    <section id="network" class="section">
         <div class="container">
-            <h2 style="font-size: 2rem; font-weight: 700; color: #D98B76; margin-bottom: 1.5rem;">Backed by Leading Investors and Partners</h2>
-            <p style="font-size: 1.2rem; color: #71717A; font-weight: 500; margin-bottom: 2rem;">Our vision for a secure, sustainable and decentralized MCP ecosystem is supported by top investors</p>
+            <div class="section-header">
+                <h2>Cardea Network Architecture</h2>
+                <p class="section-subtitle">
+                    A decentralized network of MCP service nodes and validators organized as an Actively Validated Service (AVS).
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">Service Node Network</h3>
+                    <p class="feature-description">
+                        Distributed network of professional MCP service providers offering high-availability, scalable infrastructure.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚖️</div>
+                    <h3 class="feature-title">Validator Nodes</h3>
+                    <p class="feature-description">
+                        AVS validators ensure service quality, validate DIDs, and maintain network integrity through cryptoeconomic incentives.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🏪</div>
+                    <h3 class="feature-title">Service Marketplace</h3>
+                    <p class="feature-description">
+                        Discover and access verified MCP services through our decentralized marketplace with reputation and quality metrics.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3 class="feature-title">Stablecoin Escrow</h3>
+                    <p class="feature-description">
+                        Smart contract-based escrow system using stablecoins for secure, automated payments between users and providers.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Quality Validation</h3>
+                    <p class="feature-description">
+                        Continuous monitoring and validation of MCP server quality of service (QoS) metrics and performance standards.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">DID Verification</h3>
+                    <p class="feature-description">
+                        Cryptographic verification ensures MCP servers and clients match their published decentralized identities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Token Economics -->
+    <!--
+    <section id="token" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Cardea Token Economics</h2>
+                <p class="section-subtitle">
+                    The Cardea token powers our decentralized MCP infrastructure through staking, governance, and payments.
+                </p>
+            </div>
+
+            <div class="token-uses">
+                <div class="token-use">
+                    <div class="token-use-title">🔒 AVS Stakinking</div>
+                    <p class="token-use-desc">
+                        Stake tokens to become a validator and secure the network while earning rewards for maintaining service quality.
+                    </p>
+                </div>
+
+                <div class="token-use">
+                    <div class="token-use-title">🆔 DID Purchases</div>
+                    <p class="token-use-desc">
+                        Purchase decentralized identifiers for MCP services, similar to domain registration but for service identity.
+                    </p>
+                </div>
+
+                <div class="token-use">
+                    <div class="token-use-title">💰 Treasury Growth</div>
+                    <p class="token-use-desc">
+                        Transaction fees from Cardea smart contract payments contribute to the protocol treasury for development and rewards.
+                    </p>
+                </div>
+
+                <div class="token-use">
+                    <div class="token-use-title">🗳️ Governance</div>
+                    <p class="token-use-desc">
+                        Token holders participate in protocol governance, voting on network parameters and ecosystem improvements.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    -->
+
+    <!-- Investors Section -->
+    <section class="section" style="background: linear-gradient(135deg, #ffffff 0%, #f9f7f4 100%); text-align: center;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Backed by Leading Investors and Partners</h2>
+                <p class="section-subtitle">Our vision for a secure, sustainable and decentralized MCP ecosystem is supported by top investors</p>
+            </div>
             
-            <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin: 0 auto;">
-                <div style="padding: 0.8rem; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">SIG Ventures</div>
-                <div style="padding: 0.8rem; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">Matrix Partners</div>
-                <div style="padding: 0.8rem; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">TRON Ventures</div>
-                <div style="padding: 0.8rem; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">Bertelsmann Investments</div>
-                <div style="padding: 0.8rem; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">Sky9 Capital</div>
-                <div style="padding: 0.8rem; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">ByteTrade Labs</div>
-                <div style="padding: 0.8rem; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">Gaia Foundation</div>
+            <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 2rem; margin: 0 auto;">
+                <!-- SIG Ventures -->
+                <div style="padding: 1.5rem 2rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 20px var(--shadow-light); border: 1px solid var(--border-color); transition: all 0.3s ease; height: 80px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px var(--shadow-medium)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px var(--shadow-light)'">
+                    <img src="https://via.placeholder.com/120x40/f8f9fa/1f2937?text=SIG+Ventures" alt="SIG Ventures" style="max-height: 40px; max-width: 120px; object-fit: contain;" />
+                </div>
+                
+                <!-- Matrix Partners -->
+                <div style="padding: 1.5rem 2rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 20px var(--shadow-light); border: 1px solid var(--border-color); transition: all 0.3s ease; height: 80px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px var(--shadow-medium)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px var(--shadow-light)'">
+                    <img src="https://via.placeholder.com/130x40/f8f9fa/1f2937?text=Matrix+Partners" alt="Matrix Partners" style="max-height: 40px; max-width: 130px; object-fit: contain;" />
+                </div>
+                
+                <!-- TRON Ventures -->
+                <div style="padding: 1.5rem 2rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 20px var(--shadow-light); border: 1px solid var(--border-color); transition: all 0.3s ease; height: 80px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px var(--shadow-medium)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px var(--shadow-light)'">
+                    <img src="https://via.placeholder.com/130x40/f8f9fa/1f2937?text=TRON+Ventures" alt="TRON Ventures" style="max-height: 40px; max-width: 130px; object-fit: contain;" />
+                </div>
+                
+                <!-- Bertelsmann Investments -->
+                <div style="padding: 1.5rem 2rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 20px var(--shadow-light); border: 1px solid var(--border-color); transition: all 0.3s ease; height: 80px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px var(--shadow-medium)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px var(--shadow-light)'">
+                    <img src="https://via.placeholder.com/150x40/f8f9fa/1f2937?text=Bertelsmann" alt="Bertelsmann Investments" style="max-height: 40px; max-width: 150px; object-fit: contain;" />
+                </div>
+                
+                <!-- Sky9 Capital -->
+                <div style="padding: 1.5rem 2rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 20px var(--shadow-light); border: 1px solid var(--border-color); transition: all 0.3s ease; height: 80px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px var(--shadow-medium)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px var(--shadow-light)'">
+                    <img src="https://via.placeholder.com/120x40/f8f9fa/1f2937?text=Sky9+Capital" alt="Sky9 Capital" style="max-height: 40px; max-width: 120px; object-fit: contain;" />
+                </div>
+                
+                <!-- ByteTrade Labs -->
+                <div style="padding: 1.5rem 2rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 20px var(--shadow-light); border: 1px solid var(--border-color); transition: all 0.3s ease; height: 80px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px var(--shadow-medium)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px var(--shadow-light)'">
+                    <img src="https://via.placeholder.com/130x40/f8f9fa/1f2937?text=ByteTrade+Labs" alt="ByteTrade Labs" style="max-height: 40px; max-width: 130px; object-fit: contain;" />
+                </div>
+                
+                <!-- Gaia Foundation -->
+                <div style="padding: 1.5rem 2rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 20px var(--shadow-light); border: 1px solid var(--border-color); transition: all 0.3s ease; height: 80px; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px var(--shadow-medium)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px var(--shadow-light)'">
+                    <img src="https://via.placeholder.com/130x40/f8f9fa/1f2937?text=Gaia+Foundation" alt="Gaia Foundation" style="max-height: 40px; max-width: 130px; object-fit: contain;" />
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer style="background-color: #333342; color: white; padding: 3rem 0 1.5rem;">
+    <footer>
         <div class="container">
-            <!-- Main Company Info -->
-            <div class="footer-grid">
-                <div>
-                    <div style="font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-                        <div style="width: 28px; height: 28px; background-color: #D98B76; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">O</div>
-                        <span>OpenMCP</span>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo" style="margin-bottom: 1rem;">
+                        <div class="logo-icon">C</div>
+                        <span>Cardea</span>
                     </div>
-                    <p style="color: #A1A1AA; margin-bottom: 1.5rem;">Share, secure, and monetize your MCP services with a web-based proxy that supports multiple local servers and secure Wasm modules.</p>
-                    
-                    <!-- Social Links -->
-                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                        <a href="https://github.com/llamaedge" style="width: 36px; height: 36px; background-color: rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background-color 0.3s;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                        </a>
-                        <a href="https://x.com/realwasmedge" style="width: 36px; height: 36px; background-color: rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background-color 0.3s;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                            </svg>
-                        </a>
-                        <a href="#" style="width: 36px; height: 36px; background-color: rgba(255, 255, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background-color 0.3s;">
-                            <svg xmlns="https://www.linkedin.com/company/second-state/" width="18" height="18" viewBox="0 0 24 24" fill="white">
-                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                            </svg>
-                        </a>
-                    </div>
-    
-                    <!-- Newsletter -->
-                    <!--
-                    <div>
-                        <h5 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">Stay Updated</h5>
-                        <div style="display: flex; margin-top: 0.75rem; flex-direction: column;">
-                            <input type="email" placeholder="Your email address" style="padding: 0.75rem; border-radius: 8px; border: none; background-color: rgba(255, 255, 255, 0.1); color: white; margin-bottom: 0.5rem;">
-                            <button style="background-color: #D98B76; color: white; padding: 0.75rem 1rem; border-radius: 8px; border: none; font-weight: 500;">Subscribe</button>
-                        </div>
-                    </div>
-                    -->
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        Professional MCP infrastructure enabling secure, authenticated, and monetizable AI services.
+                    </p>
                 </div>
-                
-                <!-- Newsletter form for tablets and larger displays -->
-                <!--
-                <div class="tablet-newsletter" style="display: none;">
-                    @media (min-width: 768px) {
-                        .tablet-newsletter {
-                            display: block;
-                        }
-                        
-                        .footer-grid div:first-child .newsletter-box {
-                            display: none;
-                        }
-                    }
+
+                <div class="footer-section">
+                    <h4>Products</h4>
+                    <a href="#enterprise-mcps">Enterprise MCPs</a>
+                    <a href="#software">Cardea Software</a>
+                    <a href="#network">Cardea Network</a>
+                    <a href="#token">Token Economics</a>
+                    <a href="#features">Production Ready</a>
                 </div>
-                -->
+
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <a href="https://github.com/decentralized-mcp">Documentation</a>
+                    <a href="https://github.com/decentralized-mcp">GitHub</a>
+                    <a href="#network">Network Status</a>
+                    <a href="#">API Reference</a>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <a href="https://x.com/realwasmedge">Twitter</a>
+                    <a href="https://github.com/llamaedge">Discord</a>
+                    <a href="https://www.linkedin.com/company/second-state/">LinkedIn</a>
+                    <a href="#">Blog</a>
+                </div>
             </div>
-            
-            <!-- Bottom Footer Section -->
-            <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
-                <div style="color: #A1A1AA; font-size: 0.9rem; text-align: center;">
-                    © 2025 OpenMCP. All rights reserved.
-                </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Cardea. All rights reserved. Building the future of professional MCP infrastructure.</p>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript for mobile menu toggle -->
     <script>
+        // Add smooth scrolling and animations
         document.addEventListener('DOMContentLoaded', function() {
-            const menuBtn = document.querySelector('.mobile-menu-btn');
-            const navMenu = document.querySelector('.nav-menu');
-            
-            menuBtn.addEventListener('click', function() {
-                navMenu.classList.toggle('active');
-            });
-            
-            // Close menu when clicking on a nav link
-            const navLinks = document.querySelectorAll('.nav-menu a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    navMenu.classList.remove('active');
+            // Intersection Observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-up');
+                    }
                 });
+            }, observerOptions);
+
+            // Observe all feature cards
+            document.querySelectorAll('.feature-card, .stat-card').forEach(card => {
+                observer.observe(card);
             });
-            
-            // Close menu when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.mobile-menu-btn') && !event.target.closest('.nav-menu')) {
-                    navMenu.classList.remove('active');
-                }
+
+            // Add hover effects
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
             });
         });
     </script>
